@@ -6,6 +6,8 @@ import LogoutButton from './LogoutButton';
 import unblockIcon from '../images/unblock.png'
 import deleteIcon from '../images/delete.png'
 
+const apiUrl = process.env.REACT_APP_API_URL;
+
 function UserDashboard() {
   const [userName, setUserName] = useState('');
   const [users, setUsers] = useState([]);
@@ -15,12 +17,12 @@ function UserDashboard() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/users', {headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }}); 
+        const response = await axios.get(`${apiUrl}/api/users`, {headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }}); 
         //http://localhost:5000
         setUsers(response.data);
 
-        //const response1 = await axios.get('http://localhost:5000/api/users/me', { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }});
-        //setUserName(response1.data.name);
+        const response1 = await axios.get(`${apiUrl}/api/users/me`, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }});
+        setUserName(response1.data.name);
 
       } catch (err) {
         navigate('/login');
@@ -30,7 +32,7 @@ function UserDashboard() {
     fetchUsers();
   }, [navigate]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     const fetchUserName = async () => {
       const token = localStorage.getItem('token');
       if (!token) {
@@ -49,7 +51,7 @@ function UserDashboard() {
     };
 
     fetchUserName();
-  }, [navigate]);
+  }, [navigate]);*/
 
   const handleSelectUser = (id) => {
     setSelectedUsers((prevSelectedUsers) =>
@@ -70,7 +72,7 @@ function UserDashboard() {
   const handleAction = async (action) => {
     const token = localStorage.getItem('token');
     try {
-      const response = await axios.post(`http://localhost:5000/api/users/${action}`, { userIds: selectedUsers }, 
+      const response = await axios.post(`${apiUrl}/api/users/${action}`, { userIds: selectedUsers }, 
                                                                                      { headers: { Authorization: `Bearer ${token}` }});
       if(response.data.selfBlocked){
         //alert("you blocked yourself");
@@ -96,7 +98,7 @@ function UserDashboard() {
   const handleDelete = async () => {
     const token = localStorage.getItem('token');
     try {
-      const response = await axios.post('http://localhost:5000/api/users/delete', { userIds: selectedUsers }, 
+      const response = await axios.post(`${apiUrl}/api/users/delete`, { userIds: selectedUsers }, 
                                                                                   { headers: { Authorization: `Bearer ${token}` }});
       if (response.data.selfDeleted) {
         localStorage.removeItem('token');

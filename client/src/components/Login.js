@@ -7,10 +7,12 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
+  const apiUrl = process.env.REACT_APP_API_URL;
+
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', { email, password });
+      const response = await axios.post(`${apiUrl}/api/auth/login`, { email, password });
       localStorage.setItem('token', response.data.token);
       //localStorage.setItem('currentUserId', response.data.userId);
       navigate('/dashboard');
