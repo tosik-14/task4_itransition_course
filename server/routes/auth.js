@@ -5,7 +5,7 @@ const db = require('../db');
 
 const router = express.Router();
 
-// Маршрут для регистрации
+
 router.post('/register', async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -21,7 +21,7 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// Маршрут для логина
+
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;

@@ -37,7 +37,6 @@ router.get('/me', async (req, res) => {
     const decoded = jwt.verify(token, 'your_jwt_secret');
     const currentUserId = decoded.id;
 
-    // Предположим, что у вас есть функция для получения пользователя по ID
     const [rows] = await db.query('SELECT name FROM users WHERE id = ?', [currentUserId]);
 
     if (rows.length === 0) {
